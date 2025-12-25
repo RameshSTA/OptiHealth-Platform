@@ -1,33 +1,29 @@
-from sqlalchemy import Column, Integer, String, Float, Date, DateTime, Index
-from app.db.base import Base
+from sqlalchemy import Column, String, Integer, Float, DateTime, Text
 from datetime import datetime
+from app.db.base_class import Base  # <--- MUST MATCH User model's import
 
 class Patient(Base):
     __tablename__ = "patients"
 
     id = Column(String, primary_key=True, index=True)
-    name = Column(String, index=True)
-    age = Column(Integer)
-    gender = Column(String)
-    admission_date = Column(Date)
-    condition = Column(String, index=True)
+    name = Column(String, nullable=False)
+    age = Column(Integer, nullable=False)
+    gender = Column(String, nullable=False)
+    admission_date = Column(DateTime, default=datetime.utcnow)
+    condition = Column(String, nullable=True)
     
-    # Vitals stored as individual columns for fast analytics queries
-    sys_bp = Column(Integer)
-    dia_bp = Column(Integer)
-    heart_rate = Column(Integer)
-    spo2 = Column(Integer)
-    temp = Column(Float)
-    bmi = Column(Float)
+    # Vitals
+    sys_bp = Column(Integer, nullable=True)
+    dia_bp = Column(Integer, nullable=True)
+    heart_rate = Column(Integer, nullable=True)
+    spo2 = Column(Float, nullable=True)
+    temp = Column(Float, nullable=True)
+    bmi = Column(Float, nullable=True)
     
-    # ML Outputs
-    risk_score = Column(Integer, index=True)
-    risk_level = Column(String)
-    zone = Column(String, index=True)
+    # Risk Analysis
+    risk_score = Column(Float, default=0.0)
+    risk_level = Column(String, default="Low")
     
+    # Operational
+    zone = Column(String, default="General Ward")
     created_at = Column(DateTime, default=datetime.utcnow)
-
-    # Composite index for common dashboard filtering
-    __table_args__ = (
-        Index('idx_zone_risk', 'zone', 'risk_level'),
-    )
