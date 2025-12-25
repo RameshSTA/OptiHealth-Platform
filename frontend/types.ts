@@ -1,4 +1,4 @@
-// Location: /Users/ramesh/Desktop/OptiHealth/frontend/types.ts
+// Location: frontend/src/types.ts
 
 export enum RiskLevel {
   LOW = 'Low',
@@ -25,18 +25,29 @@ export interface Patient {
   admissionDate: string;
 }
 
-// --- UPDATED FOR ML MODEL ---
+// --- Helper Types (Exported for reuse) ---
+export interface ShapValue {
+  feature: string;
+  value: number;
+}
+
+export interface NlpEntity {
+  text: string;
+  type: string;
+}
+
+// --- ML Models ---
 export interface MLPredictionInput {
   age: number;
-  gender: string;       // <--- Added (Required by Backend)
+  gender: string;
   bmi: number;
   systolicBp: number;
   diastolicBp: number;
   heartRate: number;
-  spo2: number;         // <--- Added (Required by Backend)
-  temp: number;         // <--- Added (Required by Backend)
+  spo2: number;
+  temp: number;
   
-  // Optional fields (Used for UI state, even if model doesn't use them yet)
+  // Optional fields
   clinicalNotes?: string;
   priorReadmissions?: number;
   hasDiabetes?: boolean;
@@ -50,16 +61,16 @@ export interface MLPredictionResult {
   
   // Model Insights
   suggestedInterventions: string[];
-  shapValues: { feature: string; value: number }[];
+  shapValues: ShapValue[]; 
   
   // NLP Output
   nlpAnalysis: {
     summary: string;
-    entities: { text: string; type: string }[];
+    entities: NlpEntity[];
   };
 }
 
-// --- SYSTEM & SUPPORT ---
+// --- System Types ---
 export interface SystemService {
     id: string;
     name: string;

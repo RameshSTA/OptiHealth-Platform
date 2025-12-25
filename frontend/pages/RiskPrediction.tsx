@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { 
     BrainCircuit, Sparkles, Activity, FileText, 
-    HeartPulse, Thermometer,
+    HeartPulse, Thermometer,Pill,
     CheckCircle, Target, Microscope, Database, Cpu, X, Info
 } from 'lucide-react';
 import { 
