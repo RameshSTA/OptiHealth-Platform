@@ -13,37 +13,29 @@ from app.db.base_class import Base
 from app.models.user import User
 from app.models.patient import Patient 
 
-# Create Database Tables (Auto-migration for simple setups)
+# Create Database Tables
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="OptiHealth API", version="2.0.0")
 
-# --- CORS Configuration (PRODUCTION READY) ---
-# 1. Local Development Origins
+# --- CORS Configuration (THE HYBRID FIX) ---
+# 1. Allow specific Localhost ports (Safe & Stable)
 origins = [
-    "http://localhost:3000",      # React/Vite Localhost
-    "http://127.0.0.1:3000",      # React/Vite IP
-    "http://localhost:5173",      # Vite Default Port (Backup)
-    "http://127.0.0.1:5173",      # Vite IP (Backup)
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
 ]
 
-# 2. Add Production Origins (Vercel)
-# Updated to include ALL variations to prevent CORS blocking
-prod_origins = [
-    "https://optihealth.vercel.app", 
-    "https://optihealth-frontend.vercel.app",
-    "https://optihealth-platform.vercel.app",      # Your Main URL
-    "https://optihealth-platform.vercel.app/",     # With trailing slash
-    "https://www.optihealth-platform.vercel.app",  # With 'www' prefix
-]
-
-# Allow specific origins ONLY (No wildcard "*" allowed with credentials)
+# 2. Allow ALL Vercel Previews using a Simple Regex
+# This tells the server: "If the URL ends in .vercel.app, let it in."
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins + prod_origins, # Explicit list only
+    allow_origins=origins,  # Check Localhost list first
+    allow_origin_regex=r"https://.*\.vercel\.app",  # Then check Vercel Regex
     allow_credentials=True,
-    allow_methods=["*"],          # Allow GET, POST, PUT, DELETE, etc.
-    allow_headers=["*"],          # Allow all headers (Content-Type, Auth, etc.)
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 # --- Register Routers ---
