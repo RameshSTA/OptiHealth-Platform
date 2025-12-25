@@ -7,10 +7,8 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  ResponsiveContainer,
-  defs,
-  linearGradient,
-  stop
+  ResponsiveContainer
+  // Removed 'defs', 'linearGradient', 'stop' because they are native SVG tags!
 } from 'recharts';
 import { format, parseISO } from 'date-fns';
 
@@ -77,7 +75,6 @@ const ForecastingChart: React.FC<Props> = ({ data }) => {
   };
 
   return (
-    // Flex-col ensures the header and chart don't overlap
     <div className="w-full h-[400px] bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col">
       
       {/* HEADER */}
@@ -89,11 +86,9 @@ const ForecastingChart: React.FC<Props> = ({ data }) => {
         
         {/* LEGEND BADGES */}
         <div className="flex gap-3">
-          {/* Actual = Teal */}
           <div className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-bold text-teal-700 bg-teal-50 rounded-lg border border-teal-100">
             <div className="w-3 h-3 rounded-full bg-teal-600"></div> Actual
           </div>
-          {/* Predicted = Orange & Dotted Icon */}
           <div className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-bold text-orange-700 bg-orange-50 rounded-lg border border-orange-100">
              <div className="w-3 h-1.5 rounded-full bg-orange-500" style={{borderStyle: 'dashed', borderWidth: '2px', borderColor: '#F97316', background: 'none'}}></div> AI Predicted
           </div>
@@ -105,6 +100,7 @@ const ForecastingChart: React.FC<Props> = ({ data }) => {
         <ResponsiveContainer width="100%" height="100%">
           <ComposedChart data={chartData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
             
+            {/* Native SVG tags work automatically in React */}
             <defs>
               <linearGradient id="colorActual" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="5%" stopColor="#0D9488" stopOpacity={0.3}/>
@@ -153,9 +149,9 @@ const ForecastingChart: React.FC<Props> = ({ data }) => {
               type="monotone"
               dataKey="predicted"
               name="AI Forecast"
-              stroke="#F97316"       // <--- ORANGE COLOR
+              stroke="#F97316"       
               strokeWidth={3}
-              strokeDasharray="6 6"  // <--- DOTTED STYLE
+              strokeDasharray="6 6"  
               dot={false}
               activeDot={{ r: 6, strokeWidth: 3, stroke: 'white', fill: '#F97316' }}
               connectNulls={true}
