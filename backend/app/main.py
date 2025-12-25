@@ -28,18 +28,19 @@ origins = [
 ]
 
 # 2. Add Production Origins (Vercel)
-# I added your EXACT URL from the screenshot here:
+# Updated to include ALL variations to prevent CORS blocking
 prod_origins = [
     "https://optihealth.vercel.app", 
     "https://optihealth-frontend.vercel.app",
-    "https://optihealth-platform.vercel.app",  # <--- ADDED THIS (Your real URL)
-    "https://optihealth-platform.vercel.app/"  # <--- ADDED THIS (With slash)
+    "https://optihealth-platform.vercel.app",      # Your Main URL
+    "https://optihealth-platform.vercel.app/",     # With trailing slash
+    "https://www.optihealth-platform.vercel.app",  # With 'www' prefix
 ]
 
 # Allow specific origins ONLY (No wildcard "*" allowed with credentials)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins + prod_origins, # <--- FIXED: Removed + ["*"]
+    allow_origins=origins + prod_origins, # Explicit list only
     allow_credentials=True,
     allow_methods=["*"],          # Allow GET, POST, PUT, DELETE, etc.
     allow_headers=["*"],          # Allow all headers (Content-Type, Auth, etc.)

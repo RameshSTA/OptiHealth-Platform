@@ -9,11 +9,12 @@ requests
 SQLAlchemy>=2.0.25
 psycopg2-binary>=2.9.9
 
-# --- Security (Fixed Versions) ---
-# Relaxed versions to allow Linux compatibility
-passlib[bcrypt]
+# --- Security (CRITICAL FIXES) ---
+# Removed [bcrypt] from passlib to prevent version conflicts
+passlib
 python-jose[cryptography]
-bcrypt>=4.0.1
+# Pin bcrypt to 4.0.1 to fix "password longer than 72 bytes" error
+bcrypt==4.0.1
 cryptography>=41.0.0
 
 # --- Data Science & AI ---
@@ -28,7 +29,6 @@ joblib>=1.3.0
 # --- NLP (HuggingFace) ---
 transformers>=4.30.0
 tokenizers>=0.13.0
-# We let the server pick the best torch CPU version to save space
 torch>=2.0.0
 
 # --- Utilities ---
